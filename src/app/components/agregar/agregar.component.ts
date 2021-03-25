@@ -11,6 +11,8 @@ export class AgregarComponent implements OnInit {
   formularioCreado!: FormGroup;
   //lista de usuario registrados
   listaUsuarios: Array<Usuario> = new Array<Usuario>();
+  //determina si se desea realizar "Agregar o EDITAR"
+  esNuevo: boolean = true;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -34,8 +36,26 @@ export class AgregarComponent implements OnInit {
   }
   agregar() {
     //Obtener los valores ingresados en los controles
-    console.log(this.formularioCreado.value);
+    this.listaUsuarios.push(this.formularioCreado.value as Usuario);
+    //limpiar o resetear los controles del formulario
+    this.formularioCreado.reset();
 
+
+  }
+
+  editar() {
+
+  }
+
+  editarUsuarioActual(pos: number) {
+    this.formularioCreado.setValue(
+      {
+        nombre: this.listaUsuarios[pos].nombre,
+        correo: this.listaUsuarios[pos].correo,
+        contraseña: this.listaUsuarios[pos].contraseña
+      }
+    );
+    this.esNuevo=false;
 
   }
 
