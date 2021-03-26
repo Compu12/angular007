@@ -1,11 +1,55 @@
-<div class="container">
+<div class="container mt-4">
     <form [formGroup]="formularioCreado">
         <div class="form-group">
             <label>Nombre</label>
             <input type="text" class="form-control" formControlName="nombre">
-            <div class="alert alert-danger" role="alert"
-                *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty">
-                <span *ngIf="formularioCreado.controls['nombre'].errors.required">El nombre es requerido!</span>
+            <div *ngIf="formularioCreado.controls['nombre'].invalid && formularioCreado.controls['nombre'].dirty">
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['nombre'].errors.required">
+                    El nombre es requerido!
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['nombre'].errors.pattern">
+                    Solo letras!
+                </div>
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['nombre'].errors.maxlength">
+                    Máximo 20 caracteres!
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Apellido</label>
+            <input type="text" class="form-control" formControlName="apellido">
+            <div *ngIf="formularioCreado.controls['apellido'].invalid && formularioCreado.controls['apellido'].dirty">
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['apellido'].errors.required">
+                    El apellido es requerido!
+                </div>
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['apellido'].errors.pattern">
+                    Solo letras!
+                </div>
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['apellido'].errors.maxlength">
+                    Máximo 20 caracteres!
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Edad</label>
+            <input type="text" class="form-control" formControlName="edad">
+
+            <div *ngIf="formularioCreado.controls['edad'].invalid && formularioCreado.controls['edad'].dirty">
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].errors.required">
+                    La edad es requerida!
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].errors.pattern">
+                    Solo números!
+                </div>
+                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['edad'].errors.maxlength">
+                    máximo 2 caractéres!
+                </div>
             </div>
         </div>
         <!--  propiedad inValid: {{ formularioCreado.controls['nombre'].invalid}}
@@ -16,7 +60,8 @@
             <input type="text" class="form-control" formControlName="correo">
             <div *ngIf="formularioCreado.controls['correo'].invalid && formularioCreado.controls['correo'].dirty">
 
-                <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['correo'].errors.required">
+                <div class="alert alert-danger" role="alert"
+                    *ngIf="formularioCreado.controls['correo'].errors.required">
                     El correo es requerido!
                 </div>
 
@@ -28,26 +73,56 @@
         </div>
         <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" class="form-control mb-4" formControlName="contraseña">
+            <input type="password" class="form-control mb-4" formControlName="pass">
         </div>
-        <div *ngIf="formularioCreado.controls['contraseña'].invalid && formularioCreado.controls['contraseña'].dirty">
-            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['contraseña'].errors.required">
+        <div *ngIf="formularioCreado.controls['pass'].invalid && formularioCreado.controls['pass'].dirty">
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['pass'].errors.required">
                 La contraseña es requerida!
             </div>
-            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['contraseña'].errors.minlength">
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['pass'].errors.minlength">
                 La contraseña debe tener mínimo 6 caracteresd
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="formularioCreado.controls['pass'].errors.pattern">
+                Debe contener números y letras
             </div>
         </div>
 
-        <button *ngIf="esNuevo" class="btn btn-primary me-1" (click)="agregar()" [disabled]="!formularioCreado.valid">Agregar</button>
-        <button *ngIf="!esNuevo" class="btn btn-danger" (click)="editar()" [disabled]="!formularioCreado.valid">Editar</button>
+        <button *ngIf="esNuevo" class="btn btn-primary me-1" (click)="agregar()"
+            [disabled]="!formularioCreado.valid">Agregar</button>
+        <button *ngIf="!esNuevo" class="btn btn-danger 5" (click)="editar()"
+            [disabled]="!formularioCreado.valid">Editar</button>
     </form>
 </div>
 <!-- <p>Formulario valido: {{ formularioCreado.valid }}</p>
 <p class="container">{{ formularioCreado.value | json }}</p> -->
 
-<div class="container">
-   <ul>
-       <li (click)="editarUsuarioActual(i)" *ngFor="let item of listaUsuarios;let i = index">{{i+1}} {{item.nombre}}</li>
-   </ul>
+<div class="container mt-5">
+
+
+    <table class="table" *ngIf="listaUsuarios.length!=0">
+        <thead class="table-dark">
+            <tr>
+                <td>Nombre</td>
+                <td>Apellido</td>
+                <td>Edad</td>
+                <td>Correo</td>
+          <!--       <td>Contraseña</td> -->
+                <td>Acciones</td>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of listaUsuarios;let i = index">
+                <td> {{item.nombre}}</td>
+                <td>{{item.apellido}} </td>
+                <td>{{item.edad}} </td>
+                <td> {{item.correo}} </td>
+              <!--   <td> {{item.pass}} </td> -->
+                <td>
+                    <button class="btn btn-info" (click)="editarUsuarioActual(i)">Editar</button>
+                    <button class="btn btn-danger" (click)="eliminarUsusarioActual(i)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
